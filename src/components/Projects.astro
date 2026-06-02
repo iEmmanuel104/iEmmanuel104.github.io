@@ -1,0 +1,94 @@
+---
+import SectionHeading from "./SectionHeading.astro";
+import ProjectCard from "./ProjectCard.astro";
+import { projects } from "../data/projects";
+
+const filters = [
+  { key: "all", label: "All" },
+  { key: "oss", label: "Open Source" },
+  { key: "product", label: "Shipped Products" },
+];
+---
+
+<section id="projects" class="relative py-24 sm:py-32">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <SectionHeading
+        index="04"
+        eyebrow="Selected work"
+        title="Things I've designed & built"
+      />
+
+      <!-- Filter -->
+      <div
+        class="flex w-fit gap-1 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] p-1"
+        role="tablist"
+        data-reveal
+      >
+        {
+          filters.map((f, i) => (
+            <button
+              class={`filter-btn rounded-full px-4 py-1.5 font-mono text-xs tracking-wide transition-colors ${
+                i === 0
+                  ? "bg-[var(--color-gold)] text-[var(--color-ink)]"
+                  : "text-[var(--color-muted)] hover:text-[var(--color-fg)]"
+              }`}
+              data-filter={f.key}
+              aria-pressed={i === 0 ? "true" : "false"}
+            >
+              {f.label}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    <div id="project-grid" class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        projects.map((p, i) => (
+          <div
+            class="project-item"
+            data-type={p.type}
+            data-reveal
+            style={`--reveal-delay:${Math.min(i, 5) * 60}ms`}
+          >
+            <ProjectCard project={p} />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  function initFilter() {
+    const grid = document.getElementById("project-grid");
+    const btns = document.querySelectorAll<HTMLButtonElement>(".filter-btn");
+    const items = document.querySelectorAll<HTMLElement>(".project-item");
+    if (!btns.length || !grid) return;
+    if (grid.dataset.bound === "1") return; // guard against double init
+    grid.dataset.bound = "1";
+
+    const activeCls = ["bg-[var(--color-gold)]", "text-[var(--color-ink)]"];
+    const idleCls = ["text-[var(--color-muted)]"];
+
+    btns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const filter = btn.dataset.filter;
+        btns.forEach((b) => {
+          const on = b === btn;
+          b.setAttribute("aria-pressed", String(on));
+          b.classList.toggle("bg-[var(--color-gold)]", on);
+          b.classList.toggle("text-[var(--color-ink)]", on);
+          b.classList.toggle("text-[var(--color-muted)]", !on);
+        });
+        items.forEach((item) => {
+          const show = filter === "all" || item.dataset.type === filter;
+          item.style.display = show ? "" : "none";
+        });
+      });
+    });
+  }
+  initFilter();
+  document.addEventListener("astro:page-load", initFilter);
+</script>

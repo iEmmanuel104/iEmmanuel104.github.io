@@ -1,0 +1,139 @@
+---
+import Icon from "./Icon.astro";
+import { profile } from "../data/profile";
+
+const links = [
+  { label: "About", href: "#about" },
+  { label: "Strengths", href: "#strengths" },
+  { label: "Experience", href: "#experience" },
+  { label: "Projects", href: "#projects" },
+  { label: "Skills", href: "#skills" },
+  { label: "Contact", href: "#contact" },
+];
+---
+
+<header
+  id="site-nav"
+  class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+  data-scrolled="false"
+>
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
+    <!-- Wordmark -->
+    <a href="#top" class="group flex items-center gap-2.5" aria-label="Home">
+      <span
+        class="grid h-9 w-9 place-items-center rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] font-display text-lg font-bold text-gold-grad transition-colors group-hover:border-[var(--color-bronze)]"
+        >E</span
+      >
+      <span class="hidden font-mono text-sm tracking-tight text-[var(--color-muted)] sm:inline">
+        emmanuel<span class="text-[var(--color-gold)]">.</span>dev
+      </span>
+    </a>
+
+    <!-- Desktop links -->
+    <ul class="hidden items-center gap-1 md:flex">
+      {
+        links.map((l) => (
+          <li>
+            <a
+              href={l.href}
+              class="rounded-md px-3 py-2 font-mono text-[0.8rem] tracking-wide text-[var(--color-muted)] transition-colors hover:text-[var(--color-fg)]"
+            >
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="flex items-center gap-3">
+      <a
+        href={profile.cv}
+        download
+        class="hidden items-center gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-2 font-mono text-xs tracking-wide text-[var(--color-fg)] transition-all hover:border-[var(--color-bronze)] hover:text-[var(--color-gold)] sm:flex"
+      >
+        <Icon name="download" class="h-3.5 w-3.5" />
+        Résumé
+      </a>
+
+      <!-- Mobile toggle -->
+      <button
+        id="menu-toggle"
+        class="grid h-10 w-10 place-items-center rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-fg)] md:hidden"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+      >
+        <Icon name="menu" class="h-5 w-5" />
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- Mobile drawer -->
+<div
+  id="mobile-drawer"
+  class="fixed inset-0 z-40 translate-x-full bg-[var(--color-base)]/95 backdrop-blur-xl transition-transform duration-400 md:hidden"
+  style="transition-timing-function: var(--ease-out-expo)"
+>
+  <div class="flex h-full flex-col justify-center gap-2 px-8">
+    {
+      links.map((l, i) => (
+        <a
+          href={l.href}
+          class="drawer-link font-display text-4xl font-light text-[var(--color-fg)] transition-colors hover:text-[var(--color-gold)]"
+          style={`transition-delay:${i * 40}ms`}
+        >
+          <span class="mr-3 font-mono text-sm text-[var(--color-gold)]">
+            0{i + 1}
+          </span>
+          {l.label}
+        </a>
+      ))
+    }
+    <a
+      href={profile.cv}
+      download
+      class="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-[var(--color-gold)] px-5 py-3 font-mono text-sm font-medium text-[var(--color-ink)]"
+    >
+      <Icon name="download" class="h-4 w-4" /> Download Résumé
+    </a>
+  </div>
+</div>
+
+<script>
+  function initNav() {
+    const nav = document.getElementById("site-nav");
+    const toggle = document.getElementById("menu-toggle");
+    const drawer = document.getElementById("mobile-drawer");
+    if (!nav || !toggle || !drawer) return;
+    if (nav.dataset.bound === "1") return; // guard against double init
+    nav.dataset.bound = "1";
+
+    const onScroll = () => {
+      nav.setAttribute("data-scrolled", window.scrollY > 24 ? "true" : "false");
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    const setOpen = (open: boolean) => {
+      drawer.classList.toggle("translate-x-full", !open);
+      toggle.setAttribute("aria-expanded", String(open));
+      document.body.style.overflow = open ? "hidden" : "";
+    };
+    toggle.addEventListener("click", () =>
+      setOpen(drawer.classList.contains("translate-x-full")),
+    );
+    drawer.querySelectorAll("a").forEach((a) =>
+      a.addEventListener("click", () => setOpen(false)),
+    );
+  }
+  initNav();
+  document.addEventListener("astro:page-load", initNav);
+</script>
+
+<style>
+  #site-nav[data-scrolled="true"] {
+    background: color-mix(in srgb, var(--color-base) 78%, transparent);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--color-line);
+  }
+</style>

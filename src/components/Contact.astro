@@ -1,0 +1,176 @@
+---
+import SectionHeading from "./SectionHeading.astro";
+import Icon from "./Icon.astro";
+import { profile } from "../data/profile";
+---
+
+<section id="contact" class="relative py-24 sm:py-32">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <div class="panel relative overflow-hidden p-8 sm:p-12">
+      <!-- ambient glow -->
+      <div
+        class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(224,168,46,0.14),transparent_65%)] blur-2xl"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div class="relative grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+        <!-- Left: pitch -->
+        <div>
+          <SectionHeading index="07" eyebrow="Let's talk" title="Have a system to build?" />
+          <p class="mt-5 max-w-md text-lg leading-relaxed text-[var(--color-muted)]" data-reveal>
+            I'm open to senior backend, full-stack and engineering-lead roles —
+            remote or relocation — and to ambitious Web3 / AI contract work. Drop a
+            note and I'll get back to you.
+          </p>
+
+          <div class="mt-8 space-y-4" data-reveal style="--reveal-delay:80ms">
+            <a
+              href={`mailto:${profile.email}`}
+              class="group flex items-center gap-3 font-mono text-sm text-[var(--color-fg)] transition-colors hover:text-[var(--color-gold)]"
+            >
+              <span class="grid h-10 w-10 place-items-center rounded-lg border border-[var(--color-line)] bg-[var(--color-base)] text-[var(--color-gold)]">
+                <Icon name="mail" class="h-4.5 w-4.5" />
+              </span>
+              {profile.email}
+            </a>
+            <div class="flex items-center gap-3 font-mono text-sm text-[var(--color-muted)]">
+              <span class="grid h-10 w-10 place-items-center rounded-lg border border-[var(--color-line)] bg-[var(--color-base)] text-[var(--color-gold)]">
+                <Icon name="mapPin" class="h-4.5 w-4.5" />
+              </span>
+              {profile.location}
+            </div>
+          </div>
+
+          <div class="mt-8 flex items-center gap-3" data-reveal style="--reveal-delay:140ms">
+            {
+              profile.socials.map((s) => (
+                <a
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  class="grid h-10 w-10 place-items-center rounded-lg border border-[var(--color-line)] bg-[var(--color-base)] text-[var(--color-muted)] transition-all hover:-translate-y-0.5 hover:border-[var(--color-bronze)] hover:text-[var(--color-gold)]"
+                >
+                  <Icon name={s.icon} class="h-4.5 w-4.5" />
+                </a>
+              ))
+            }
+          </div>
+        </div>
+
+        <!-- Right: form -->
+        <div data-reveal style="--reveal-delay:120ms">
+          <form
+            id="contact-form"
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            class="space-y-4"
+          >
+            <input type="hidden" name="form-name" value="contact" />
+            <p class="hidden">
+              <label>Don't fill this out: <input name="bot-field" /></label>
+            </p>
+
+            <div class="grid gap-4 sm:grid-cols-2">
+              <label class="block">
+                <span class="font-mono text-xs uppercase tracking-wider text-[var(--color-faint)]">Name</span>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  autocomplete="name"
+                  class="mt-2 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-base)] px-4 py-3 text-[var(--color-fg)] outline-none transition-colors placeholder:text-[var(--color-faint)] focus:border-[var(--color-gold)]"
+                  placeholder="Jane Doe"
+                />
+              </label>
+              <label class="block">
+                <span class="font-mono text-xs uppercase tracking-wider text-[var(--color-faint)]">Email</span>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  autocomplete="email"
+                  class="mt-2 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-base)] px-4 py-3 text-[var(--color-fg)] outline-none transition-colors placeholder:text-[var(--color-faint)] focus:border-[var(--color-gold)]"
+                  placeholder="jane@company.com"
+                />
+              </label>
+            </div>
+
+            <label class="block">
+              <span class="font-mono text-xs uppercase tracking-wider text-[var(--color-faint)]">Company / Subject</span>
+              <input
+                type="text"
+                name="subject"
+                class="mt-2 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-base)] px-4 py-3 text-[var(--color-fg)] outline-none transition-colors placeholder:text-[var(--color-faint)] focus:border-[var(--color-gold)]"
+                placeholder="What's this about?"
+              />
+            </label>
+
+            <label class="block">
+              <span class="font-mono text-xs uppercase tracking-wider text-[var(--color-faint)]">Message</span>
+              <textarea
+                name="message"
+                required
+                rows="5"
+                class="mt-2 w-full resize-none rounded-lg border border-[var(--color-line)] bg-[var(--color-base)] px-4 py-3 text-[var(--color-fg)] outline-none transition-colors placeholder:text-[var(--color-faint)] focus:border-[var(--color-gold)]"
+                placeholder="Tell me about the role or project…"></textarea>
+            </label>
+
+            <button
+              type="submit"
+              class="group flex w-full items-center justify-center gap-2 rounded-full bg-[var(--color-gold)] px-6 py-3.5 font-mono text-sm font-medium text-[var(--color-ink)] transition-all hover:bg-[var(--color-gold-bright)] hover:shadow-[0_0_30px_-6px_var(--color-gold)] disabled:opacity-60"
+            >
+              <span class="btn-label">Send message</span>
+              <Icon name="arrowUpRight" class="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </button>
+
+            <p id="form-status" class="hidden font-mono text-sm" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initContact() {
+    const form = document.getElementById("contact-form") as HTMLFormElement | null;
+    const status = document.getElementById("form-status");
+    if (!form || !status) return;
+    if (form.dataset.bound === "1") return; // guard against double init
+    form.dataset.bound = "1";
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector("button[type=submit]") as HTMLButtonElement;
+      const label = form.querySelector(".btn-label");
+      btn.disabled = true;
+      if (label) label.textContent = "Sending…";
+
+      try {
+        const data = new FormData(form);
+        await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(data as any).toString(),
+        });
+        status.textContent = "✓ Thanks — your message is on its way. I'll reply soon.";
+        status.className = "font-mono text-sm text-[var(--color-teal)]";
+        status.classList.remove("hidden");
+        form.reset();
+        if (label) label.textContent = "Sent";
+      } catch {
+        status.textContent = "Something went wrong — please email me directly.";
+        status.className = "font-mono text-sm text-[#ff7a70]";
+        status.classList.remove("hidden");
+        btn.disabled = false;
+        if (label) label.textContent = "Send message";
+      }
+    });
+  }
+  initContact();
+  document.addEventListener("astro:page-load", initContact);
+</script>
