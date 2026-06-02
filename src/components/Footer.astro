@@ -1,0 +1,48 @@
+---
+import Icon from "./Icon.astro";
+import { profile } from "../data/profile";
+const year = new Date().getFullYear();
+---
+
+<footer class="relative border-t border-[var(--color-line)] py-12">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <div class="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
+      <div>
+        <a href="#top" class="font-display text-2xl font-semibold text-gold-grad">
+          Emmanuel Umukoro
+        </a>
+        <p class="mt-2 max-w-sm font-mono text-xs leading-relaxed text-[var(--color-faint)]">
+          {profile.title} — {profile.tagline}. {profile.availability}.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        {
+          profile.socials.map((s) => (
+            <a
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={s.label}
+              class="grid h-10 w-10 place-items-center rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-muted)] transition-all hover:-translate-y-0.5 hover:border-[var(--color-bronze)] hover:text-[var(--color-gold)]"
+            >
+              <Icon name={s.icon} class="h-4.5 w-4.5" />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="my-8 hairline"></div>
+
+    <div
+      class="flex flex-col-reverse items-start justify-between gap-3 font-mono text-xs text-[var(--color-faint)] sm:flex-row sm:items-center"
+    >
+      <p>© {year} Umukoro Emmanuel Oghenerukevwe. All rights reserved.</p>
+      <p class="flex items-center gap-2">
+        <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-teal)]"></span>
+        Built with Astro · Tailwind · deployed on Netlify
+      </p>
+    </div>
+  </div>
+</footer>

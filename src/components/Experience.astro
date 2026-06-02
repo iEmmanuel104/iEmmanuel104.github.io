@@ -1,0 +1,116 @@
+---
+import SectionHeading from "./SectionHeading.astro";
+import Icon from "./Icon.astro";
+import { experience } from "../data/experience";
+---
+
+<section id="experience" class="relative py-24 sm:py-32">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <SectionHeading
+      index="03"
+      eyebrow="Where I've worked"
+      title="A decade of shipping, role by role"
+    />
+    <p class="mt-5 max-w-2xl text-lg text-[var(--color-muted)]" data-reveal>
+      Ten engagements across fintech, identity, music-tech, real estate and AI —
+      most owning the backend end-to-end, several leading the full stack.
+    </p>
+
+    <!-- Timeline -->
+    <ol class="relative mt-16">
+      <!-- vertical rail -->
+      <span
+        class="absolute left-[7px] top-2 bottom-2 w-px bg-gradient-to-b from-[var(--color-gold)]/60 via-[var(--color-line)] to-transparent md:left-[calc(11rem+7px)]"
+        aria-hidden="true"
+      ></span>
+
+      {
+        experience.map((job, i) => (
+          <li
+            class="relative mb-12 pl-9 last:mb-0 md:grid md:grid-cols-[11rem_1fr] md:gap-8 md:pl-0"
+            data-reveal
+            style={`--reveal-delay:${Math.min(i, 4) * 60}ms`}
+          >
+            {/* node */}
+            <span
+              class={`absolute left-0 top-1.5 grid h-3.5 w-3.5 place-items-center rounded-full border-2 md:left-[11rem] ${
+                job.current
+                  ? "border-[var(--color-teal)] bg-[var(--color-teal)]"
+                  : "border-[var(--color-bronze)] bg-[var(--color-base)]"
+              }`}
+              aria-hidden="true"
+            >
+              {job.current && (
+                <span class="absolute h-3.5 w-3.5 rounded-full bg-[var(--color-teal)] pulse-ring" />
+              )}
+            </span>
+
+            {/* date column */}
+            <div class="mb-3 md:mb-0 md:pt-0 md:text-right">
+              <div class="font-mono text-xs leading-relaxed text-[var(--color-muted)]">
+                {job.start}
+                <span class="text-[var(--color-faint)]"> — </span>
+                <span class={job.current ? "text-[var(--color-teal)]" : ""}>{job.end}</span>
+              </div>
+              <div class="mt-1 font-mono text-[0.68rem] text-[var(--color-faint)]">
+                {job.location}
+              </div>
+              {job.current && (
+                <span class="mt-2 inline-block rounded-full border border-[var(--color-teal)]/40 bg-[var(--color-teal)]/10 px-2.5 py-0.5 font-mono text-[0.62rem] uppercase tracking-wider text-[var(--color-teal)]">
+                  Now
+                </span>
+              )}
+            </div>
+
+            {/* content card */}
+            <div class="panel p-6 transition-colors hover:border-[var(--color-bronze)]/60">
+              <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                <h3 class="font-display text-xl font-medium text-[var(--color-fg)]">
+                  {job.role}
+                </h3>
+                <span class="font-mono text-sm text-[var(--color-gold)]">{job.company}</span>
+              </div>
+              <p class="mt-2 text-sm italic text-[var(--color-muted)]">{job.summary}</p>
+
+              <ul class="mt-4 space-y-2.5">
+                {job.highlights.map((h) => (
+                  <li class="flex gap-3 text-[0.92rem] leading-relaxed text-[var(--color-muted)]">
+                    <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-[var(--color-bronze)]" />
+                    <span>{h}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div class="mt-5 flex flex-wrap gap-1.5">
+                {job.stack.map((t) => (
+                  <span class="rounded-md border border-[var(--color-line)] bg-[var(--color-base)] px-2 py-0.5 font-mono text-[0.68rem] text-[var(--color-faint)]">
+                    {t}
+                  </span>
+                ))}
+              </div>
+
+              {job.links.length > 0 && (
+                <div class="mt-5 flex flex-wrap gap-x-5 gap-y-2 border-t border-[var(--color-line)] pt-4">
+                  {job.links.map((l) => (
+                    <a
+                      href={l.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="group inline-flex items-center gap-1.5 font-mono text-xs text-[var(--color-muted)] transition-colors hover:text-[var(--color-gold)]"
+                    >
+                      {l.label}
+                      <Icon
+                        name="arrowUpRight"
+                        class="h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      />
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

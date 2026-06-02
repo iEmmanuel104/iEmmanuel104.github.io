@@ -1,0 +1,47 @@
+---
+import SectionHeading from "./SectionHeading.astro";
+import Icon from "./Icon.astro";
+import { profile } from "../data/profile";
+---
+
+<section id="strengths" class="relative py-24 sm:py-32">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <SectionHeading
+      index="02"
+      eyebrow="Core strengths"
+      title="Four domains I go deep in"
+    />
+    <p class="mt-5 max-w-2xl text-lg text-[var(--color-muted)]" data-reveal>
+      Most engineers pick one. My work lives at the overlap — and that intersection is
+      where I do my most valuable work.
+    </p>
+
+    <div class="mt-14 grid gap-5 sm:grid-cols-2">
+      {
+        profile.strengths.map((s, i) => (
+          <article
+            class="group panel relative overflow-hidden p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-bronze)]"
+            data-reveal
+            style={`--reveal-delay:${i * 80}ms`}
+          >
+            <div
+              class="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[radial-gradient(circle,rgba(224,168,46,0.12),transparent_70%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            />
+            <div class="flex items-center gap-4">
+              <span class="grid h-12 w-12 place-items-center rounded-xl border border-[var(--color-line)] bg-[var(--color-base)] text-[var(--color-gold)] transition-colors group-hover:border-[var(--color-bronze)]">
+                <Icon name={s.icon} class="h-6 w-6" />
+              </span>
+              <h3 class="font-display text-2xl font-medium text-[var(--color-fg)]">
+                {s.title}
+              </h3>
+            </div>
+            <p class="mt-5 leading-relaxed text-[var(--color-muted)]">{s.blurb}</p>
+            <span class="mt-5 block font-mono text-xs text-[var(--color-faint)]">
+              0{i + 1} / 04
+            </span>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

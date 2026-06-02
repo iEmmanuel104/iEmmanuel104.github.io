@@ -1,0 +1,59 @@
+---
+import SectionHeading from "./SectionHeading.astro";
+import { skillGroups } from "../data/skills";
+
+// A flat list for the top marquee ticker
+const ticker = skillGroups.flatMap((g) => g.skills).filter((s, i, a) => a.indexOf(s) === i);
+---
+
+<section id="skills" class="relative py-24 sm:py-32">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <SectionHeading index="05" eyebrow="The toolbox" title="Technologies I work with" />
+  </div>
+
+  <!-- Edge-to-edge marquee -->
+  <div class="relative mt-12 overflow-hidden py-2" data-reveal>
+    <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-[var(--color-base)] to-transparent"></div>
+    <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-[var(--color-base)] to-transparent"></div>
+    <div class="flex w-max animate-marquee gap-3">
+      {
+        [...ticker, ...ticker].map((s) => (
+          <span class="whitespace-nowrap rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-1.5 font-mono text-sm text-[var(--color-muted)]">
+            {s}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Grouped grid -->
+  <div class="mx-auto mt-14 max-w-6xl px-5 sm:px-8">
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        skillGroups.map((group, i) => (
+          <div
+            class="panel p-6 transition-colors hover:border-[var(--color-bronze)]/50"
+            data-reveal
+            style={`--reveal-delay:${Math.min(i, 5) * 60}ms`}
+          >
+            <div class="flex items-center justify-between">
+              <h3 class="font-display text-lg font-medium text-[var(--color-fg)]">
+                {group.category}
+              </h3>
+              <span class="font-mono text-[0.62rem] uppercase tracking-widest text-[var(--color-faint)]">
+                {group.hint}
+              </span>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-1.5">
+              {group.skills.map((s) => (
+                <span class="rounded-md border border-[var(--color-line)] bg-[var(--color-base)] px-2.5 py-1 font-mono text-[0.72rem] text-[var(--color-muted)] transition-colors hover:border-[var(--color-bronze)] hover:text-[var(--color-gold)]">
+                  {s}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
